@@ -10,18 +10,19 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
 func Connect() {
 
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-
 	a := os.Getenv("dbConn")
 
 	conn, err := gorm.Open(mysql.Open(a), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
 	}
+	DB = conn
 	conn.AutoMigrate(&models.User{}) //Auto created
 }
